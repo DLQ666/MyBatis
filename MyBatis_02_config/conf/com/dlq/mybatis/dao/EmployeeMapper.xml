@@ -13,7 +13,11 @@
 
         public Employee getEmpById(Integer id);
      -->
-    <select id="getEmpById" resultType="com.dlq.mybatis.bean.Employee">
+    <select id="getEmpById" resultType="com.dlq.mybatis.bean.Employee" databaseId="mysql">
         select * from tbl_employee where id = #{id}
+    </select>
+
+    <select id="getEmpById" resultType="com.dlq.mybatis.bean.Employee" databaseId="oracle">
+        select UUID id, NAME lastName from DEP where UUID = #{id}
     </select>
 </mapper>

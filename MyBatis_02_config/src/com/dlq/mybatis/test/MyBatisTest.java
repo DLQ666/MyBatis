@@ -3,6 +3,7 @@ package com.dlq.mybatis.test;
 
 import com.dlq.mybatis.bean.Employee;
 import com.dlq.mybatis.dao.EmployeeMapper;
+import com.dlq.mybatis.dao.EmployeeMapperAnnotation;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -74,7 +75,25 @@ public class MyBatisTest {
             //3、获取接口实现类对象
             //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
             EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
-            Employee employee = mapper.getEmpById(1);
+            Employee employee = mapper.getEmpById(2);
+            System.out.println(mapper.getClass());
+            System.out.println(employee);
+        } finally {
+            openSession.close();
+        }
+    }
+
+    @Test
+    public void testMyBatis3() throws IOException {
+        //1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            //3、获取接口实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            EmployeeMapperAnnotation mapper = openSession.getMapper(EmployeeMapperAnnotation.class);
+            Employee employee = mapper.getEmpById(2);
             System.out.println(mapper.getClass());
             System.out.println(employee);
         } finally {
