@@ -105,7 +105,6 @@
         -->
         <!--<mapper resource="com/dlq/mybatis/dao/EmployeeMapper.xml"/>-->
         <!--<mapper class="com.dlq.mybatis.dao.EmployeeMapperAnnotation"/>-->
-
         <!-- 批量注册： -->
         <package name="com.dlq.mybatis.dao"/>
     </mappers>
