@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 1、接口式编程
@@ -133,6 +135,46 @@ public class MyBatisTest {
 
             //手动提交数据
             /*openSession.commit();*/
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testSelect4() throws IOException {
+        //1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //2、获取到的sqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            //3、获取接口实现建一个代理对象，代理对象去执行增删改查方法
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            Employee tom = mapper.getEmpByIdAndLastName(1, "Tom");
+            System.out.println(tom);
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testMapSelect5() throws IOException {
+        //1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //2、获取到的sqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            //3、获取接口实现建一个代理对象，代理对象去执行增删改查方法
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            Map<String,Object> map = new HashMap<>();
+            map.put("id",1);
+            map.put("lastName","Tom");
+            map.put("tableName","tbl_employee");
+            Employee employee = mapper.getEmpByMap(map);
+            System.out.println(employee);
         } finally {
             if (openSession != null){
                 openSession.close();

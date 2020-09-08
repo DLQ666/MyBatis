@@ -13,6 +13,15 @@
 
         public Employee getEmpById(Integer id);
      -->
+    <!--public Employee getEmpByMap(Map<String,Object> map);-->
+    <select id="getEmpByMap" resultType="com.dlq.mybatis.bean.Employee">
+        select * from ${tableName} where id = ${id} and last_name=#{lastName}
+    </select>
+    <!-- public Employee getEmpByIdAndLastName(Integer id,String lastName); -->
+    <select id="getEmpByIdAndLastName"  resultType="com.dlq.mybatis.bean.Employee">
+        select * from tbl_employee where id = #{id} and last_name=#{lastName}
+    </select>
+
     <select id="getEmpById" resultType="com.dlq.mybatis.bean.Employee" databaseId="mysql">
         select * from tbl_employee where id = #{id}
     </select>
