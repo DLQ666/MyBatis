@@ -21,3 +21,4 @@
         select UUID id, NAME lastName from DEP where UUID = #{id}
     </select>
 </mapper>
+
