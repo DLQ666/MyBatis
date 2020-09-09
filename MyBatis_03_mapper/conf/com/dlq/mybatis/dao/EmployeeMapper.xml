@@ -105,3 +105,4 @@
         delete from tbl_employee where id=#{id}
     </delete>
 </mapper>
+

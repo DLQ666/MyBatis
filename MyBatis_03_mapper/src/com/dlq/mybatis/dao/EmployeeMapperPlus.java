@@ -20,3 +20,4 @@ public interface EmployeeMapperPlus {
 
     public List<Employee> getEmpByDeptId(Integer deptId);
 }
+

@@ -51,3 +51,4 @@
         select id,dept_name from tbl_dept where id = #{id}
     </select>
 </mapper>
+

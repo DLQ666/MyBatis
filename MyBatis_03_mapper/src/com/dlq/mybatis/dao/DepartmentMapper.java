@@ -17,3 +17,4 @@ public interface DepartmentMapper {
     public Department getDeptByIdStep(Integer id);
 
 }
+
