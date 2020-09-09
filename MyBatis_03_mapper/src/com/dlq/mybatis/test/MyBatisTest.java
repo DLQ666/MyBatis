@@ -1,9 +1,12 @@
 package com.dlq.mybatis.test;
 
 
+import com.dlq.mybatis.bean.Department;
 import com.dlq.mybatis.bean.Employee;
+import com.dlq.mybatis.dao.DepartmentMapper;
 import com.dlq.mybatis.dao.EmployeeMapper;
 import com.dlq.mybatis.dao.EmployeeMapperAnnotation;
+import com.dlq.mybatis.dao.EmployeeMapperPlus;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -13,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -181,4 +185,174 @@ public class MyBatisTest {
             }
         }
     }
+
+    @Test
+    public void testListLike6() throws IOException {
+        //1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //2、获取到的sqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            //3、获取接口实现建一个代理对象，代理对象去执行增删改查方法
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            List<Employee> list = mapper.getEmpByLastNameLike("%码%");
+            for (Employee employee : list) {
+                System.out.println(employee);
+            }
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testReturnMap() throws IOException {
+        //1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //2、获取到的sqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            //3、获取接口实现建一个代理对象，代理对象去执行增删改查方法
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            Map<String, Object> returnMap = mapper.getEmpByIdReturnMap(8);
+            System.out.println(returnMap);
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testReturnMap2() throws IOException {
+        //1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //2、获取到的sqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            //3、获取接口实现建一个代理对象，代理对象去执行增删改查方法
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            Map<String, Object> returnMap = mapper.getEmpByIdReturnMap(8);
+            System.out.println(returnMap);
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testReturnLikeMap() throws IOException {
+        //1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //2、获取到的sqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            //3、获取接口实现建一个代理对象，代理对象去执行增删改查方法
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            Map<Integer, Employee> employeeMap = mapper.getEmpByLastNameLikeReturnMap("%码%");
+            System.out.println(employeeMap);
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void test01() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+            Employee empById = mapper.getEmpById(1);
+            System.out.println(empById);
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void test02() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+            Employee empAndDept = mapper.getEmpAndDept(1);
+            System.out.println(empAndDept);
+            System.out.println(empAndDept.getDept());
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void test03() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+            Employee empByIdStep = mapper.getEmpByIdStep(1);
+            System.out.println(empByIdStep);
+            System.out.println(empByIdStep.getDept());
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void test04() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+            Employee empByIdStep = mapper.getEmpByIdStep(4);
+            System.out.println(empByIdStep);
+            System.out.println(empByIdStep.getDept());
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testOneToMore() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            DepartmentMapper mapper = openSession.getMapper(DepartmentMapper.class);
+            Department department = mapper.getDeptByIdPlus(1);
+            System.out.println(department);
+            System.out.println(department.getEmps());
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testOneToMoreByStep() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            DepartmentMapper mapper = openSession.getMapper(DepartmentMapper.class);
+            Department department = mapper.getDeptByIdStep(1);
+            System.out.println(department);
+            System.out.println(department.getEmps());
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
 }
