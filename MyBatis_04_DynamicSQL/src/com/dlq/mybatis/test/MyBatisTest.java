@@ -12,9 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 1、接口式编程
@@ -359,15 +357,142 @@ public class MyBatisTest {
         try {
             EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
             Employee employee = new Employee();
-            employee.setId(4);
+            employee.setId(null);
             employee.setLastName("%码%");
             employee.setEmail("mayun@qq.com");
+            //测试if\where
             List<Employee> employeeList = mapper.getEmpByConditionIf(employee);
             for (Employee emp : employeeList) {
                 System.out.println(emp);
             }
+
+            //测试Trim
+            List<Employee> employeeList1 = mapper.getEmpByConditionTrim(employee);
+            for (Employee employee1 : employeeList1) {
+                System.out.println(employee1);
+            }
         } finally {
             if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testDynamicSql1() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee();
+            employee.setId(null);
+            employee.setLastName(null);
+            employee.setEmail(null);
+            List<Employee> empChoose = mapper.getEmpByConditionChoose(employee);
+            for (Employee emp : empChoose) {
+                System.out.println(emp);
+            }
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testDynamicSqlSet() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee();
+            employee.setId(1);
+            employee.setLastName("root");
+            employee.setEmail(null);
+            employee.setGender(null);
+            //测试set标签
+            mapper.updateEmp(employee);
+            openSession.commit();
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testDynamicSqlForeach() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+            List<Employee> list = mapper.getEmpByConditionForeach(Arrays.asList(1, 2, 3, 4));
+            for (Employee emp : list) {
+                System.out.println(emp);
+            }
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testDynamicSqlForeach2() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+            List<Integer> ids = new ArrayList<>();
+            ids.add(1);
+            ids.add(2);
+            ids.add(3);
+            ids.add(4);
+            Map<String,Object> map = new HashMap<>();
+            map.put("ids",ids);
+            List<Employee> employees = mapper.getEmp_foreach(map);
+            for (Employee emp : employees) {
+                System.out.println(emp);
+            }
+        } finally {
+            if (openSession != null){
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testBatchSave() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+            List<Employee> emps = new ArrayList<>();
+            emps.add(new Employee(null,"市场部222","5617373"));
+            emps.add(new Employee(null,"营销部222","1323541"));
+            mapper.addEmps(emps);
+            openSession.commit();
+        } finally {
+            if (openSession != null) {
+                openSession.close();
+            }
+        }
+    }
+
+    @Test
+    public void testInnerParam() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee emp = new Employee();
+            emp.setLastName("e");
+            List<Employee> list = mapper.getEmpsTestInnerParameter(emp);
+            for (Employee employee : list) {
+                System.out.println(employee);
+            }
+        } finally {
+            if (openSession != null) {
                 openSession.close();
             }
         }

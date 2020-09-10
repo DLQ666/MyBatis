@@ -18,7 +18,8 @@
                 value：取值
     -->
     <settings>
-        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
         <!--显示的指定每个我们需要更改的配置的值，即使他是默认的。防止版本更新带来的问题  -->
         <setting name="lazyLoadingEnabled" value="true"/>
         <setting name="aggressiveLazyLoading" value="false"/>
@@ -52,9 +53,9 @@
                     type：数据源类型；  UNPOOLED(UnpooledDataSourceFactory)
                                       POOLED(PooledDataSourceFactory)
                                       JNDI(JndiDataSourceFactory)
-                                     自定义数据源：实现DataSourceFactory接口，type是全类名
+                                      自定义数据源：实现DataSourceFactory接口，type是全类名
      -->
-    <environments default="dev_mysql">
+    <environments default="dev_oracle">
         <environment id="dev_mysql">
             <transactionManager type="JDBC"></transactionManager>
             <dataSource type="POOLED">

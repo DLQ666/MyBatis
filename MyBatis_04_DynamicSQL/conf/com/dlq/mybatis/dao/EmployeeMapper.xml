@@ -96,7 +96,8 @@
 
     <!--public void updateEmp(Employee employee);-->
     <update id="updateEmp" parameterType="com.dlq.mybatis.bean.Employee">
-        update tbl_employee set last_name=#{lastName},email=#{email},gender=#{gender}
+        update tbl_employee
+        set last_name=#{lastName},email=#{email},gender=#{gender}
         where id = #{id}
     </update>
 
